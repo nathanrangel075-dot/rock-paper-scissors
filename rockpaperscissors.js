@@ -1,5 +1,5 @@
 
-function getComputerChoice(computerChoice){
+function getComputerChoice(){
 
 const choices = ["rock", "paper", "scissors"]; 
 const randomIndex = Math.floor(Math.random() *choices.length); 
@@ -16,8 +16,11 @@ return choices[randomIndex];
 console.log(RandomChoice); */
 
 
-function getHumanChoice(){
+function getHumanChoice(playerChoice){
 
+return playerChoice;
+
+/*
 let humanChoice;
 const validChoices = ["rock", "paper", "scissors"]; 
 
@@ -37,7 +40,7 @@ while(true){
     }
 }
 
-return humanChoice;
+return humanChoice; */
 
 }
 
@@ -79,25 +82,61 @@ function determineWinner(humanChoice, computerChoice){
 
 }
 
-function playRound () {
-    const humanSelection = getHumanChoice();
+function playRound (playerChoice) {
+    const humanSelection = getHumanChoice(playerChoice);
     const computerSelection = getComputerChoice();
     const winner = determineWinner(humanSelection, computerSelection);
 
 
+    if(winner.startsWith("Human wins!")){
+        humanScore++;
+    }else if (winner.startsWith("Computer wins!")){
+        computerScore++;
+    }
+
+/*
 return{
     humanChoice: humanSelection,
     computerChoice: computerSelection,
     winner: winner
-};
+};*/
+
+updateResults(humanSelection, computerSelection, winner);
 
 }
+
+function updateResults(humanChoice, computerChoice, winner){
+
+    const resultDiv = document.getElementById("result");
+    const scoreDiv = document.getElementById("score");
+
+    resultDiv.textContent = "Human chose " + humanChoice + ". Computer chose " + computerChoice + ". " + winner;
+
+    scoreDiv.textContent = "Score - Human: " + humanScore + " |  Computer: " + computerScore;
+
+    if(humanScore === 5){
+        resultDiv.textContent = "Human wins the game!";
+        resetGame();
+
+    }else if(computerScore === 5){
+        resultDiv.textContent = "Computer wins the game!";
+        resetGame();
+    }
+}
+
+function resetGame(){
+    humanScore = 0;
+    computerScore = 0;
+    const scoreDiv = document.getElementById("score");
+    scoreDiv.textContent = "Score - Human: 0 | Computer: 0";
+}
+
 
 
 /*playRound(humanSelection, computerSelection); */
 
 
-function playGame(){
+/* function playGame(){
     let humanScore = 0;
     let computerScore = 0;
 
@@ -141,4 +180,39 @@ function playGame(){
 
 playGame();
 
+*/
 
+let humanScore = 0;
+let computerScore = 0;
+
+
+const btn1 = document.createElement("button");
+document.body.appendChild(btn1);
+btn1.textContent = "Rock";
+btn1.addEventListener("click", () => playRound("rock"));
+
+
+
+
+const btn2 = document.createElement("button");
+document.body.appendChild(btn2);
+btn2.textContent = "Paper";
+btn2.addEventListener("click", () => playRound("paper"));
+
+
+
+
+const btn3 = document.createElement("button");
+document.body.appendChild(btn3);
+btn3.textContent = "Scissors";
+btn3.addEventListener("click", () => playRound("scissors"));
+
+
+const resultDiv = document.createElement("div");
+resultDiv.id = "result";
+document.body.appendChild(resultDiv);
+
+const scoreDiv = document.createElement("div");
+scoreDiv.id ="score";
+scoreDiv.textContent = "Score - Human: 0 | Computer: 0";
+document.body.appendChild(scoreDiv);
